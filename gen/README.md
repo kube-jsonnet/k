@@ -1,19 +1,20 @@
-# ksonnet-gen
+# `gen`: Library generator
 
-`ksonnet-gen` takes the OpenAPI Kubernetes specification and generates
-a Jsonnet file representing that API definition.
+This folder contains the generator, responsible for transforming the
+`swagger.json` into the Jsonnet library.
 
-## Build
+## Building
+
+This project uses `go.mod`, so make sure to be outside of `$GOPATH`.
 
 ```bash
-dep ensure      # Fetch dependencies
-go build -o ksonnet-gen .
+$ go build .
 ```
 
 ## Usage
 
-`ksonnet-gen [path to k8s OpenAPI swagger.json] [output dir]`
+From the project root:
 
-Typically the swagger spec is in something like
-`k8s.io/kubernetes/api/openapi-spec`, where `k8s.io` is in your Go src
-folder.
+```bash
+$ go run ./gen -dir=1.14 https://raw.githubusercontent.com/kubernetes/kubernetes/release-1.14/api/openapi-spec/swagger.json
+```

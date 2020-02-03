@@ -32,7 +32,7 @@ func main() {
 	}
 	flag.Parse()
 
-	swag := flag.Arg(1)
+	swag := flag.Arg(0)
 	if swag == "" {
 		log.Fatalln("argument <openapi-spec> required")
 	}
@@ -42,6 +42,9 @@ func main() {
 		log.Fatalln("generate lib:", err)
 	}
 
+	if err := os.MkdirAll(*outputDir, os.ModePerm); err != nil {
+		log.Fatalln(err)
+	}
 	if err := writeFile(filepath.Join(*outputDir, k8s), lib.K8s); err != nil {
 		log.Fatalln("k8s.libsonnet:", err)
 	}
