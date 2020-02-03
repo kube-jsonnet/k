@@ -3,8 +3,9 @@ package ksonnet
 import (
 	"sort"
 
-	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 	"github.com/pkg/errors"
+
+	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 )
 
 type renderNodeFn func(c *Catalog, a *APIObject) (*nm.Object, error)

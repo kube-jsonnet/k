@@ -6,10 +6,11 @@ import (
 	"testing"
 
 	"github.com/go-openapi/spec"
-	"github.com/kube-jsonnet/k/gen/kubespec"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/kube-jsonnet/k/gen/kubespec"
 )
 
 var (

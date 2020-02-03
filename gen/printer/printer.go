@@ -11,8 +11,9 @@ import (
 
 	"github.com/google/go-jsonnet/ast"
 	"github.com/google/go-jsonnet/parser"
-	"github.com/kube-jsonnet/k/gen/astext"
 	"github.com/pkg/errors"
+
+	"github.com/kube-jsonnet/k/gen/astext"
 )
 
 const (

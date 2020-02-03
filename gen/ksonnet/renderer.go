@@ -5,8 +5,9 @@ import (
 	"sort"
 	"strings"
 
-	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 	"github.com/pkg/errors"
+
+	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 )
 
 // renderer is an item that can be rendered.

@@ -7,10 +7,11 @@ import (
 	"testing"
 
 	"github.com/google/go-jsonnet/ast"
-	"github.com/kube-jsonnet/k/gen/astext"
-	"github.com/kube-jsonnet/k/gen/printer"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/kube-jsonnet/k/gen/astext"
+	"github.com/kube-jsonnet/k/gen/printer"
 )
 
 func ExampleApply() {

@@ -4,10 +4,11 @@ import (
 	"io/ioutil"
 	"testing"
 
-	nm "github.com/kube-jsonnet/k/gen/nodemaker"
-	"github.com/kube-jsonnet/k/gen/printer"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	nm "github.com/kube-jsonnet/k/gen/nodemaker"
+	"github.com/kube-jsonnet/k/gen/printer"
 )
 
 func TestLiteralFieldRenderer(t *testing.T) {

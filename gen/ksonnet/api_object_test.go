@@ -3,9 +3,10 @@ package ksonnet
 import (
 	"testing"
 
-	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
+
+	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 )
 
 func TestAPIObject_Kind(t *testing.T) {

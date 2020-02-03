@@ -35,7 +35,7 @@ var (
 		makeDescriptor("api", "extensions", "StatefulSet"):        statefulSetCtor,
 		makeDescriptor("api", "extensions", "StatefulSetList"):    objectList,
 
-		makeDescriptor("api", "authentication", "TokenReview"): []constructor{
+		makeDescriptor("api", "authentication", "TokenReview"): {
 			*newConstructor(
 				"new",
 				*newConstructorParam("token", "mixin.spec.withToken", nil),
@@ -50,7 +50,7 @@ var (
 
 		makeDescriptor("api", "certificates", "CertificateSigningRequestList"): objectList,
 
-		makeDescriptor("api", "core", "ConfigMap"): []constructor{
+		makeDescriptor("api", "core", "ConfigMap"): {
 			*newConstructor(
 				"new",
 				*newConstructorParam("name", "mixin.metadata.withName", nil),
@@ -58,14 +58,14 @@ var (
 			),
 		},
 		makeDescriptor("api", "core", "ConfigMapList"): objectList,
-		makeDescriptor("api", "core", "Container"): []constructor{
+		makeDescriptor("api", "core", "Container"): {
 			*newConstructor(
 				"new",
 				*newConstructorParam("name", "withName", nil),
 				*newConstructorParam("image", "withImage", nil),
 			),
 		},
-		makeDescriptor("api", "core", "ContainerPort"): []constructor{
+		makeDescriptor("api", "core", "ContainerPort"): {
 			*newConstructor("new", *newConstructorParam("containerPort", "withContainerPort", nil)),
 			*newConstructor("newNamed",
 				*newConstructorParam("containerPort", "withContainerPort", nil),
@@ -73,7 +73,7 @@ var (
 			),
 		},
 		makeDescriptor("api", "core", "EndpointsList"): objectList,
-		makeDescriptor("api", "core", "EnvVar"): []constructor{
+		makeDescriptor("api", "core", "EnvVar"): {
 			*newConstructor("new",
 				*newConstructorParam("name", "withName", nil),
 				*newConstructorParam("value", "withValue", nil)),
@@ -86,13 +86,13 @@ var (
 				*newConstructorParam("fieldPath", "mixin.valueFrom.fieldRef.withFieldPath", nil)),
 		},
 		makeDescriptor("api", "core", "EventList"): objectList,
-		makeDescriptor("api", "core", "KeyToPath"): []constructor{
+		makeDescriptor("api", "core", "KeyToPath"): {
 			*newConstructor("new",
 				*newConstructorParam("key", "withKey", nil),
 				*newConstructorParam("path", "withPath", nil)),
 		},
 		makeDescriptor("api", "core", "LimitRangeList"): objectList,
-		makeDescriptor("api", "core", "Namespace"): []constructor{
+		makeDescriptor("api", "core", "Namespace"): {
 			*newConstructor("new",
 				*newConstructorParam("name", "mixin.metadata.withName", nil)),
 		},
@@ -104,7 +104,7 @@ var (
 		makeDescriptor("api", "core", "PodTemplateList"):           objectList,
 		makeDescriptor("api", "core", "ReplicationControllerList"): objectList,
 		makeDescriptor("api", "core", "ResourceQuotaList"):         objectList,
-		makeDescriptor("api", "core", "Secret"): []constructor{
+		makeDescriptor("api", "core", "Secret"): {
 			*newConstructor("new",
 				*newConstructorParam("name", "mixin.metadata.withName", nil),
 				*newConstructorParam("data", "withData", nil),
@@ -115,19 +115,19 @@ var (
 				*newConstructorParam("type", "withType", "Opaque")),
 		},
 		makeDescriptor("api", "core", "SecretList"): objectList,
-		makeDescriptor("api", "core", "Service"): []constructor{
+		makeDescriptor("api", "core", "Service"): {
 			*newConstructor("new",
 				*newConstructorParam("name", "mixin.metadata.withName", nil),
 				*newConstructorParam("selector", "mixin.spec.withSelector", nil),
 				*newConstructorParam("ports", "mixin.spec.withPorts", nil)),
 		},
-		makeDescriptor("api", "core", "ServiceAccount"): []constructor{
+		makeDescriptor("api", "core", "ServiceAccount"): {
 			*newConstructor("new",
 				*newConstructorParam("name", "mixin.metadata.withName", nil)),
 		},
 		makeDescriptor("api", "core", "ServiceAccountList"): objectList,
 		makeDescriptor("api", "core", "ServiceList"):        objectList,
-		makeDescriptor("api", "core", "ServicePort"): []constructor{
+		makeDescriptor("api", "core", "ServicePort"): {
 			*newConstructor("new",
 				*newConstructorParam("port", "withPort", nil),
 				*newConstructorParam("targetPort", "withTargetPort", nil)),
@@ -136,7 +136,7 @@ var (
 				*newConstructorParam("port", "withPort", nil),
 				*newConstructorParam("targetPort", "withTargetPort", nil)),
 		},
-		makeDescriptor("api", "core", "Volume"): []constructor{
+		makeDescriptor("api", "core", "Volume"): {
 			*newConstructor(
 				"fromConfigMap",
 				*newConstructorParam("name", "withName", nil),
@@ -156,7 +156,7 @@ var (
 				*newConstructorParam("name", "withName", nil),
 				*newConstructorParam("secretName", "mixin.secret.withSecretName", nil)),
 		},
-		makeDescriptor("api", "core", "VolumeMount"): []constructor{
+		makeDescriptor("api", "core", "VolumeMount"): {
 			*newConstructor("new",
 				*newConstructorParam("name", "withName", nil),
 				*newConstructorParam("mountPath", "withMountPath", nil),

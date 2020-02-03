@@ -3,8 +3,9 @@ package ksonnet
 import (
 	"testing"
 
-	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 	"github.com/stretchr/testify/require"
+
+	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 )
 
 func TestVersion_Name(t *testing.T) {

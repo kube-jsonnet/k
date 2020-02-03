@@ -3,8 +3,9 @@ package ksonnet
 import (
 	"testing"
 
-	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 	"github.com/stretchr/testify/require"
+
+	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 )
 
 func TestGroup_Name(t *testing.T) {
@@ -22,8 +23,8 @@ func TestGroup_Node(t *testing.T) {
 func TestGroup_Versions(t *testing.T) {
 	g := NewGroup("groupName")
 	g.versions = map[string]*Version{
-		"v1": &Version{},
-		"v2": &Version{},
+		"v1": {},
+		"v2": {},
 	}
 
 	require.Len(t, g.Versions(), 2)

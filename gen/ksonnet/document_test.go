@@ -5,8 +5,9 @@ import (
 	"testing"
 
 	"github.com/go-openapi/spec"
-	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 	"github.com/pkg/errors"
+
+	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

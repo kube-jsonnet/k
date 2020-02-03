@@ -8,8 +8,9 @@ import (
 	"strings"
 
 	"github.com/google/go-jsonnet/ast"
-	"github.com/kube-jsonnet/k/gen/astext"
 	"github.com/pkg/errors"
+
+	"github.com/kube-jsonnet/k/gen/astext"
 )
 
 // Noder is an entity that can be converted to a jsonnet node.

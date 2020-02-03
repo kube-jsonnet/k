@@ -4,8 +4,9 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/kube-jsonnet/k/gen/printer"
 	"github.com/stretchr/testify/require"
+
+	"github.com/kube-jsonnet/k/gen/printer"
 )
 
 func TestExtension_Output(t *testing.T) {

@@ -6,8 +6,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/kube-jsonnet/k/gen/ksonnet"
 	"github.com/pkg/errors"
+
+	"github.com/kube-jsonnet/k/gen/ksonnet"
 )
 
 const (

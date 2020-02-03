@@ -4,8 +4,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/kube-jsonnet/k/gen/kubespec"
 	"github.com/stretchr/testify/require"
+
+	"github.com/kube-jsonnet/k/gen/kubespec"
 )
 
 func testdata(name string) string {

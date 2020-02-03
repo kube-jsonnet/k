@@ -9,8 +9,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/kube-jsonnet/k/gen/ksonnet"
 	"github.com/stretchr/testify/require"
+
+	"github.com/kube-jsonnet/k/gen/ksonnet"
 )
 
 func testdata(name string) string {

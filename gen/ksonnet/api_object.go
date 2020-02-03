@@ -1,8 +1,9 @@
 package ksonnet
 
 import (
-	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 	"github.com/pkg/errors"
+
+	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 )
 
 // APIObject is an API object.

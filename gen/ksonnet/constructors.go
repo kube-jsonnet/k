@@ -5,8 +5,9 @@ import (
 	"sort"
 
 	"github.com/google/go-jsonnet/ast"
-	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 	"github.com/pkg/errors"
+
+	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 )
 
 var (

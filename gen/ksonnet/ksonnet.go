@@ -3,9 +3,10 @@ package ksonnet
 import (
 	"bytes"
 
+	"github.com/pkg/errors"
+
 	"github.com/kube-jsonnet/k/gen/kubespec"
 	"github.com/kube-jsonnet/k/gen/printer"
-	"github.com/pkg/errors"
 )
 
 // Lib is a ksonnet lib.
