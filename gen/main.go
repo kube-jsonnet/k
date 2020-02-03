@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -17,18 +19,34 @@ const (
 )
 
 func main() {
-	var outputDir = "."
+	log.SetFlags(0)
 
-	lib, err := ksonnet.GenerateLib(os.Args[1])
-	if err != nil {
-		log.Fatalln("generate lib", err)
+	outputDir := flag.String("dir", ".", "output directory")
+
+	flag.Usage = func() {
+		fmt.Println("gen transforms a Kubernetes swagger.json into a Jsonnet library")
+		fmt.Println("\nUsage:")
+		fmt.Println(" ", filepath.Base(os.Args[0]), "<openapi-spec> [flags]")
+		fmt.Println("\nFlags:")
+		flag.PrintDefaults()
+	}
+	flag.Parse()
+
+	swag := flag.Arg(1)
+	if swag == "" {
+		log.Fatalln("argument <openapi-spec> required")
 	}
 
-	if err := writeFile(filepath.Join(outputDir, k8s), lib.K8s); err != nil {
+	lib, err := ksonnet.GenerateLib(swag)
+	if err != nil {
+		log.Fatalln("generate lib:", err)
+	}
+
+	if err := writeFile(filepath.Join(*outputDir, k8s), lib.K8s); err != nil {
 		log.Fatalln("k8s.libsonnet:", err)
 	}
-	if err := writeFile(filepath.Join(outputDir, k), lib.Extensions); err != nil {
-		log.Fatalln("k.libsonnet", err)
+	if err := writeFile(filepath.Join(*outputDir, k), lib.Extensions); err != nil {
+		log.Fatalln("k.libsonnet:", err)
 	}
 }
 
