@@ -29,6 +29,28 @@ $ jb install github.com/kube-jsonnet/k/1.16
 
 For more examples, check https://x.tanka.dev
 
+## Versioning
+
+In the context of this project, there are two different versions:
+
+1. **Kubernetes target**: Equals the Kubernetes version, the library is generated
+   for. For each Kubernetes major release that is supported, a subdirectory
+   exists in this repo, containing a matching library.
+2. **Library version**: Independent from the targeted Kubernetes version, this
+   repository is frequently released (`git tag`). This version resembles
+   enhancements to the generator, etc.
+
+At any time, `master` can be considered stable, tags are just for historic reference.
+
+### Support policy
+
+We support at least three major versions including the current one, perhaps more
+when reasonable.
+
+As soon as a version is not maintained anymore, its respective subdirectory is
+removed from the tree. If you still need it, consider using the previous tag of
+this project that still includes it.
+
 # License
 
 Licensed Apache 2.0, see [`LICENSE`](LICENSE).
