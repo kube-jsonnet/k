@@ -35,15 +35,3 @@ func writeFile(path string, b []byte) error {
 	err := ioutil.WriteFile(path, b, 0644)
 	return errors.Wrapf(err, "write %q", path)
 }
-
-func checkFile(path string) (bool, error) {
-	if _, err := os.Stat(path); err != nil {
-		if os.IsNotExist(err) {
-			return false, nil
-		}
-
-		return false, errors.Wrapf(err, "stat path %s", path)
-	}
-
-	return true, nil
-}

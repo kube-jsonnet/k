@@ -17,11 +17,6 @@ type Noder interface {
 	Node() ast.Node
 }
 
-type field struct {
-	key   Key
-	value Noder
-}
-
 // ObjectOptOneline is a functional option which sets the object's oneline status.
 func ObjectOptOneline(oneline bool) ObjectOpt {
 	return func(o *Object) {

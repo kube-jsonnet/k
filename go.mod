@@ -1,4 +1,4 @@
-module github.com/kube-jsonnet/k/gen
+module github.com/kube-jsonnet/k
 
 go 1.13
 
