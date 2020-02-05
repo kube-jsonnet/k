@@ -2,6 +2,7 @@ package ksonnet
 
 import (
 	"bytes"
+	"regexp"
 
 	"github.com/pkg/errors"
 
@@ -16,14 +17,32 @@ type Lib struct {
 	Version    string
 }
 
+type GenOpts struct {
+	// OpenAPI (swagger.json) spec of the API
+	OpenAPI string
+
+	// Optional regexp to only generate specific apiGroups
+	Target *regexp.Regexp
+
+	// Name of the generated library (embedded into Jsonnet)
+	Name string
+
+	// Version of the generated library (embedded into Jsonnet)
+	Version string
+}
+
 // GenerateLib generates ksonnet lib.
-func GenerateLib(source string) (*Lib, error) {
-	apiSpec, checksum, err := kubespec.Import(source)
+func GenerateLib(opts GenOpts) (*Lib, error) {
+	apiSpec, checksum, err := kubespec.Import(opts.OpenAPI)
 	if err != nil {
 		return nil, errors.Wrap(err, "import Kubernetes spec")
 	}
 
-	c, err := NewCatalog(apiSpec, CatalogOptChecksum(checksum))
+	c, err := NewCatalog(apiSpec,
+		CatalogOptChecksum(checksum),
+		CatalogOptVersion(opts.Version),
+	)
+
 	if err != nil {
 		return nil, errors.Wrap(err, "create ksonnet catalog")
 	}

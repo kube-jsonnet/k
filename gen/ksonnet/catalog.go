@@ -42,11 +42,26 @@ func CatalogOptChecksum(checksum string) CatalogOpt {
 	}
 }
 
+// CatalogOptChecksum is a Catalog option for setting the Kubernetes target Version
+func CatalogOptVersion(version string) CatalogOpt {
+	return func(c *Catalog) {
+		if version == "" {
+			return
+		}
+
+		v, err := semver.ParseTolerant(version)
+		if err != nil {
+			panic(err)
+		}
+		c.apiVersion = &v
+	}
+}
+
 // Catalog is a catalog definitions
 type Catalog struct {
 	apiSpec    *spec.Swagger
 	extractFn  ExtractFn
-	apiVersion semver.Version
+	apiVersion *semver.Version
 	paths      map[string]Component
 	checksum   string
 
@@ -65,28 +80,30 @@ func NewCatalog(apiSpec *spec.Swagger, opts ...CatalogOpt) (*Catalog, error) {
 		return nil, errors.New("apiSpec Info is nil")
 	}
 
-	parts := strings.SplitN(apiSpec.Info.Version, ".", 3)
-	parts[0] = strings.TrimPrefix(parts[0], "v")
-	vers := strings.Join(parts, ".")
-	apiVersion, err := semver.Parse(vers)
-	if err != nil {
-		return nil, errors.Wrap(err, "invalid apiSpec version")
-	}
-
 	paths, err := parsePaths(apiSpec)
 	if err != nil {
 		return nil, errors.Wrap(err, "parse apiSpec paths")
 	}
 
 	c := &Catalog{
-		apiSpec:    apiSpec,
-		extractFn:  extractProperties,
-		apiVersion: apiVersion,
-		paths:      paths,
+		apiSpec:   apiSpec,
+		extractFn: extractProperties,
+		paths:     paths,
 	}
 
 	for _, opt := range opts {
 		opt(c)
+	}
+
+	if c.apiVersion == nil {
+		parts := strings.SplitN(apiSpec.Info.Version, ".", 3)
+		parts[0] = strings.TrimPrefix(parts[0], "v")
+		vers := strings.Join(parts, ".")
+		apiVersion, err := semver.Parse(vers)
+		if err != nil {
+			return nil, errors.Wrap(err, "invalid apiSpec version")
+		}
+		c.apiVersion = &apiVersion
 	}
 
 	return c, nil
@@ -327,7 +344,7 @@ func (c *Catalog) definitions() spec.Definitions {
 	out := spec.Definitions{}
 
 	for name, schema := range c.apiSpec.Definitions {
-		if isValidDefinition(name, c.apiVersion) {
+		if isValidDefinition(name, *c.apiVersion) {
 			out[name] = schema
 		}
 	}
