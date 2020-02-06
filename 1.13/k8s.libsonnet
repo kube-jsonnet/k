@@ -1,7 +1,27 @@
-(import 'apps.libsonnet') +
 {
   __ksonnet: {
     checksum: '4f27287e82c6f4304dbf99f1c68dab12c1c5b540658296057d47aea068e1ccd9',
     kubernetesVersion: '1.13.0',
   },
+  admissionregistration:: (import 'admissionregistration.libsonnet'),
+  apiextensions:: (import 'apiextensions.libsonnet'),
+  apiregistration:: (import 'apiregistration.libsonnet'),
+  apps:: (import 'apps.libsonnet'),
+  auditregistration:: (import 'auditregistration.libsonnet'),
+  authentication:: (import 'authentication.libsonnet'),
+  authorization:: (import 'authorization.libsonnet'),
+  autoscaling:: (import 'autoscaling.libsonnet'),
+  batch:: (import 'batch.libsonnet'),
+  certificates:: (import 'certificates.libsonnet'),
+  coordination:: (import 'coordination.libsonnet'),
+  core:: (import 'core.libsonnet'),
+  events:: (import 'events.libsonnet'),
+  extensions:: (import 'extensions.libsonnet'),
+  meta:: (import 'meta.libsonnet'),
+  networking:: (import 'networking.libsonnet'),
+  policy:: (import 'policy.libsonnet'),
+  rbac:: (import 'rbac.libsonnet'),
+  scheduling:: (import 'scheduling.libsonnet'),
+  settings:: (import 'settings.libsonnet'),
+  storage:: (import 'storage.libsonnet'),
 }
