@@ -1,10 +1,10 @@
 {
   local hidden = (import '_hidden.libsonnet'),
-  v1beta1:: {
-    local apiVersion = { apiVersion: 'apiextensions.k8s.io/v1beta1' },
+  v1:: {
+    local apiVersion = { apiVersion: 'v1' },
     // Patch is provided to give a concrete name and type to the Kubernetes PATCH request body.
-    customResourceDefinition:: {
-      local kind = { kind: 'CustomResourceDefinition' },
+    namespace:: {
+      local kind = { kind: 'Namespace' },
       new():: apiVersion + kind,
       mixin:: {},
     },

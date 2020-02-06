@@ -1,7 +1,14 @@
 {
   __ksonnet: {
-    checksum: 'b923088253256b1ed1631fb8f32328d08984583a7f31c58c1a2d95926f71f204',
-    kubernetesVersion: '1.14.0',
+    "k8s.io": {
+      checksum: 'b923088253256b1ed1631fb8f32328d08984583a7f31c58c1a2d95926f71f204',
+      generator: {
+        vendor: 'github.com/kube-jsonnet/k',
+        version: '22fb023-dirty',
+      },
+      maintainer: 'kube-jsonnet',
+      version: '1.14.0',
+    },
   },
   admissionregistration:: (import 'admissionregistration.libsonnet'),
   apiextensions:: (import 'apiextensions.libsonnet'),
