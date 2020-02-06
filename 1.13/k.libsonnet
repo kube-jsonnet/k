@@ -1,4 +1,4 @@
-local k8s = import 'k8s.libsonnet';
+local k8s = (import 'k8s.libsonnet');
 local fn = {
   mapContainers(f):: {
     local podContainers = super.spec.template.spec.containers,
