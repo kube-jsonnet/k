@@ -12,7 +12,7 @@ import (
 
 // Lib is a ksonnet lib.
 type Lib struct {
-	K8s        []byte
+	K8s        map[string][]byte
 	Extensions []byte
 	Version    string
 }
@@ -66,24 +66,28 @@ func GenerateLib(opts GenOpts) (*Lib, error) {
 	return lib, nil
 }
 
-func createK8s(c *Catalog) ([]byte, error) {
+func createK8s(c *Catalog) (map[string][]byte, error) {
 	doc, err := NewDocument(c)
 	if err != nil {
 		return nil, errors.Wrapf(err, "create document")
 	}
 
-	node, err := doc.Node()
+	nodes, err := doc.Nodes()
 	if err != nil {
 		return nil, errors.Wrapf(err, "build document node")
 	}
 
-	var buf bytes.Buffer
+	out := make(map[string][]byte)
+	for name, n := range nodes {
+		var buf bytes.Buffer
+		if err := printer.Fprint(&buf, n.Node()); err != nil {
+			return nil, errors.Wrap(err, "print AST")
+		}
 
-	if err := printer.Fprint(&buf, node.Node()); err != nil {
-		return nil, errors.Wrap(err, "print AST")
+		out[name] = buf.Bytes()
 	}
 
-	return buf.Bytes(), nil
+	return out, nil
 }
 
 func createK(c *Catalog) ([]byte, error) {

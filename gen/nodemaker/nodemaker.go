@@ -491,13 +491,20 @@ const (
 
 // Binary represents a binary operation
 type Binary struct {
-	Left  Noder
-	Right Noder
-	Op    BinaryOp
+	Left      Noder
+	Right     Noder
+	Op        BinaryOp
+	MultiLine bool
 	Chainer
 }
 
 var _ Noder = (*Binary)(nil)
+
+func NewBigBinary(left, right Noder, op BinaryOp) *Binary {
+	b := NewBinary(left, right, op)
+	b.MultiLine = true
+	return b
+}
 
 // NewBinary creates an instance of Binary.
 func NewBinary(left, right Noder, op BinaryOp) *Binary {
@@ -516,9 +523,17 @@ func (b *Binary) Node() ast.Node {
 		panic(fmt.Sprintf("%q is an invalid binary operation", b.Op))
 	}
 
+	left := b.Left.Node()
+	right := b.Right.Node()
+
+	if b.MultiLine {
+		left.Loc().End.Line = 0
+		right.Loc().Begin.Line = 1
+	}
+
 	return &ast.Binary{
-		Left:  b.Left.Node(),
-		Right: b.Right.Node(),
+		Left:  left,
+		Right: right,
 		Op:    op,
 	}
 }
@@ -894,8 +909,10 @@ func NewImport(name string) *Import {
 func (i *Import) Node() ast.Node {
 	file := NewStringDouble(i.name)
 
-	return &ast.Import{
-		File: file.node(),
+	return &ast.Parens{
+		Inner: &ast.Import{
+			File: file.node(),
+		},
 	}
 }
 

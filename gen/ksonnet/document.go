@@ -18,8 +18,8 @@ type Document struct {
 	// these are defined to aid testing Document
 	typesFn            func() ([]Type, error)
 	fieldsFn           func() ([]Field, error)
-	renderFn           func(fn renderNodeFn, c *Catalog, o *nm.Object, groups []Group) error
-	renderGroups       func(doc *Document, container *nm.Object) error
+	renderFn           func(fn renderNodeFn, c *Catalog, o *nm.Object, group Group) error
+	renderGroups       func(doc *Document) (map[string]nm.Noder, error)
 	renderHiddenGroups func(doc *Document, container *nm.Object) error
 	objectNodeFn       func(c *Catalog, a *APIObject) (*nm.Object, error)
 }
@@ -109,8 +109,8 @@ func (d *Document) groups(resources []Object) ([]Group, error) {
 }
 
 // Node converts a document to a node.
-func (d *Document) Node() (*nm.Object, error) {
-	out := nm.NewObject()
+func (d *Document) Nodes() (map[string]nm.Noder, error) {
+	main := nm.NewObject()
 
 	metadata := map[string]interface{}{
 		"kubernetesVersion": d.catalog.Version(),
@@ -120,66 +120,86 @@ func (d *Document) Node() (*nm.Object, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "create metadata key")
 	}
-	out.Set(nm.InheritedKey("__ksonnet"), metadataObj)
+	main.Set(nm.InheritedKey("__ksonnet"), metadataObj)
 
-	if err := d.renderGroups(d, out); err != nil {
+	groups, err := d.renderGroups(d)
+	if err != nil {
 		return nil, err
 	}
 
 	hidden := nm.NewObject()
-
 	if err := d.renderHiddenGroups(d, hidden); err != nil {
 		return nil, err
 	}
+	main.Set(nm.LocalKey("hidden"), hidden)
 
-	out.Set(nm.LocalKey("hidden"), hidden)
+	nodes := make([]nm.Noder, 0, len(groups))
+	for name := range groups {
+		nodes = append(nodes, nm.NewImport(name+".libsonnet"))
+	}
+	nodes = append(nodes, main)
 
-	return out, nil
+	groups["k8s"] = add(nodes...)
+	return groups, nil
 }
 
-func render(fn renderNodeFn, catalog *Catalog, o *nm.Object, groups []Group) error {
-	for _, group := range groups {
-		groupNode := group.Node()
+func add(nodes ...nm.Noder) *nm.Binary {
+	b := nm.NewBigBinary(nodes[0], nodes[1], nm.BopPlus)
 
-		log.Debugln(group.Name())
-		for _, version := range group.Versions() {
-			versionNode := version.Node()
+	for _, n := range nodes[2:] {
+		b = nm.NewBigBinary(b, n, nm.BopPlus)
+	}
 
-			log.Debugln(" ", version.Name())
-			for _, apiObject := range version.APIObjects() {
+	return b
+}
 
-				log.Debugln("   ", apiObject.Kind())
-				objectNode, err := fn(catalog, &apiObject)
-				if err != nil {
-					return errors.Wrapf(err, "create node %s", apiObject.Kind())
-				}
+func render(fn renderNodeFn, catalog *Catalog, o *nm.Object, group Group) error {
+	groupNode := group.Node()
 
-				versionNode.Set(
-					nm.NewKey(apiObject.Kind(), nm.KeyOptComment(apiObject.Description())),
-					objectNode)
+	log.Debugln(group.Name())
+	for _, version := range group.Versions() {
+		versionNode := version.Node()
+
+		log.Debugln(" ", version.Name())
+		for _, apiObject := range version.APIObjects() {
+
+			log.Debugln("   ", apiObject.Kind())
+			objectNode, err := fn(catalog, &apiObject)
+			if err != nil {
+				return errors.Wrapf(err, "create node %s", apiObject.Kind())
 			}
 
-			groupNode.Set(nm.NewKey(version.Name()), versionNode)
+			versionNode.Set(
+				nm.NewKey(apiObject.Kind(), nm.KeyOptComment(apiObject.Description())),
+				objectNode)
 		}
 
-		o.Set(nm.NewKey(group.Name()), groupNode)
+		groupNode.Set(nm.NewKey(version.Name()), versionNode)
 	}
 
+	o.Set(nm.NewKey(group.Name()), groupNode)
 	return nil
-
 }
 
-func renderGroups(d *Document, container *nm.Object) error {
+func renderGroups(d *Document) (map[string]nm.Noder, error) {
+	out := make(map[string]nm.Noder)
+
 	groups, err := d.Groups()
 	if err != nil {
-		return errors.Wrap(err, "retrieve groups")
+		return nil, errors.Wrap(err, "retrieve groups")
 	}
 
-	if err = d.renderFn(d.objectNodeFn, d.catalog, container, groups); err != nil {
-		return errors.Wrap(err, "render groups")
+	for _, g := range groups {
+		o := nm.NewObject()
+
+		if err = d.renderFn(d.objectNodeFn, d.catalog, o, g); err != nil {
+			return nil, errors.Wrap(err, "render groups")
+		}
+
+		out[g.Name()] = o
 	}
 
-	return nil
+	return out, nil
 }
 
 func renderHiddenGroups(d *Document, container *nm.Object) error {
@@ -188,8 +208,10 @@ func renderHiddenGroups(d *Document, container *nm.Object) error {
 		return errors.Wrap(err, "retrieve hidden groups")
 	}
 
-	if err = d.renderFn(d.objectNodeFn, d.catalog, container, groups); err != nil {
-		return errors.Wrap(err, "render hidden groups")
+	for _, g := range groups {
+		if err = d.renderFn(d.objectNodeFn, d.catalog, container, g); err != nil {
+			return errors.Wrap(err, "render hidden groups")
+		}
 	}
 
 	return nil

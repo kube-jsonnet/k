@@ -70,9 +70,13 @@ func gen(opts ksonnet.GenOpts, dir string) error {
 	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
 		return err
 	}
-	if err := writeFile(filepath.Join(dir, k8s), lib.K8s); err != nil {
-		return fmt.Errorf("k8s.libsonnet: %w", err)
+
+	for name, data := range lib.K8s {
+		if err := writeFile(filepath.Join(dir, name+".libsonnet"), data); err != nil {
+			return fmt.Errorf("k8s.libsonnet: %w", err)
+		}
 	}
+
 	if err := writeFile(filepath.Join(dir, k), lib.Extensions); err != nil {
 		return fmt.Errorf("k.libsonnet: %w", err)
 	}
