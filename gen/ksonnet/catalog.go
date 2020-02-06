@@ -302,8 +302,7 @@ func (c *Catalog) descend(definition string, m map[string]Property) (bool, error
 				return true, nil
 			}
 
-			// NOTE: if this is a reference to json schema, bail out because this is recursive.
-			if ref == "io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1beta1.JSONSchemaProps" {
+			if stringInSlice(ref, recursiveRefs) {
 				continue
 			}
 

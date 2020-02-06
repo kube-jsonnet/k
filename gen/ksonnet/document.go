@@ -5,6 +5,7 @@ import (
 
 	"github.com/pkg/errors"
 
+	"github.com/kube-jsonnet/k/gen/log"
 	nm "github.com/kube-jsonnet/k/gen/nodemaker"
 )
 
@@ -139,9 +140,15 @@ func (d *Document) Node() (*nm.Object, error) {
 func render(fn renderNodeFn, catalog *Catalog, o *nm.Object, groups []Group) error {
 	for _, group := range groups {
 		groupNode := group.Node()
+
+		log.Debugln(group.Name())
 		for _, version := range group.Versions() {
 			versionNode := version.Node()
+
+			log.Debugln(" ", version.Name())
 			for _, apiObject := range version.APIObjects() {
+
+				log.Debugln("   ", apiObject.Kind())
 				objectNode, err := fn(catalog, &apiObject)
 				if err != nil {
 					return errors.Wrapf(err, "create node %s", apiObject.Kind())

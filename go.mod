@@ -8,5 +8,6 @@ require (
 	github.com/go-openapi/swag v0.19.7
 	github.com/google/go-jsonnet v0.13.0
 	github.com/pkg/errors v0.9.1
+	github.com/pkg/profile v1.4.0
 	github.com/stretchr/testify v1.3.0
 )

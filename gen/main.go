@@ -4,14 +4,16 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"regexp"
 
 	"github.com/pkg/errors"
 
+	"github.com/pkg/profile"
+
 	"github.com/kube-jsonnet/k/gen/ksonnet"
+	"github.com/kube-jsonnet/k/gen/log"
 )
 
 const (
@@ -20,13 +22,14 @@ const (
 )
 
 func main() {
-	log.SetFlags(0)
-
 	outputDir := flag.String("dir", ".", "output directory")
 	target := flag.String("target", "", "<optional> regex pattern to filter apiGroup")
 
 	name := flag.String("name", "Kubernetes", "name of the generated library")
 	version := flag.String("version", "", "<optional> version of the generated library (defaults to specified in swagger.json)")
+
+	pprof := flag.Bool("pprof", false, "Profile execution")
+	verbose := flag.Bool("v", false, "debug logging")
 
 	flag.Usage = func() {
 		fmt.Println("gen transforms a Kubernetes swagger.json into a Jsonnet library")
@@ -36,6 +39,11 @@ func main() {
 		flag.PrintDefaults()
 	}
 	flag.Parse()
+
+	log.Debug = *verbose
+	if *pprof {
+		defer profile.Start(profile.MemProfile).Stop()
+	}
 
 	if len(flag.Args()) == 0 {
 		flag.Usage()
