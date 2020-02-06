@@ -111,7 +111,6 @@ func (d *Document) groups(resources []Object) ([]Group, error) {
 // Node converts a document to a node.
 func (d *Document) Nodes() (map[string]nm.Noder, error) {
 	main := nm.NewObject()
-
 	metadata := map[string]interface{}{
 		"kubernetesVersion": d.catalog.Version(),
 		"checksum":          d.catalog.Checksum(),
@@ -122,48 +121,38 @@ func (d *Document) Nodes() (map[string]nm.Noder, error) {
 	}
 	main.Set(nm.InheritedKey("__ksonnet"), metadataObj)
 
-	groups, err := d.renderGroups(d)
+	files, err := d.renderGroups(d)
 	if err != nil {
 		return nil, err
 	}
-
-	for k, g := range groups {
+	for k, g := range files {
 		g.(*nm.Object).Set0(nm.LocalKey("hidden"), nm.NewImport("_hidden.libsonnet"))
-		groups[k] = g
+		files[k] = g
 	}
+
+	for _, name := range mapKeys(files) {
+		main.Set(nm.NewKey(name), nm.NewImport(name+".libsonnet"))
+	}
+	files["k8s"] = main
 
 	hidden := nm.NewObject()
 	if err := d.renderHiddenGroups(d, hidden); err != nil {
 		return nil, err
 	}
+	files["_hidden"] = hidden
 
-	nodes := make([]nm.Noder, 0, len(groups))
-	for name := range groups {
-		if name != "apps" {
-			continue
-		}
-		nodes = append(nodes, nm.NewImport(name+".libsonnet"))
-	}
-	nodes = append(nodes, main)
-
-	groups["k8s"] = add(nodes...)
-	groups["_hidden"] = hidden
-	return groups, nil
+	return files, nil
 }
 
-func add(nodes ...nm.Noder) *nm.Binary {
-	b := nm.NewBigBinary(nodes[0], nodes[1], nm.BopPlus)
-
-	for _, n := range nodes[2:] {
-		b = nm.NewBigBinary(b, n, nm.BopPlus)
+func mapKeys(m map[string]nm.Noder) (keys []string) {
+	for k := range m {
+		keys = append(keys, k)
 	}
-
-	return b
+	sort.Strings(keys)
+	return
 }
 
 func render(fn renderNodeFn, catalog *Catalog, o *nm.Object, group Group) error {
-	groupNode := group.Node()
-
 	log.Debugln(group.Name())
 	for _, version := range group.Versions() {
 		versionNode := version.Node()
@@ -182,10 +171,9 @@ func render(fn renderNodeFn, catalog *Catalog, o *nm.Object, group Group) error 
 				objectNode)
 		}
 
-		groupNode.Set(nm.NewKey(version.Name()), versionNode)
+		o.Set(nm.NewKey(version.Name()), versionNode)
 	}
 
-	o.Set(nm.NewKey(group.Name()), groupNode)
 	return nil
 }
 
