@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   batch:: {
     v1:: {
       local apiVersion = { apiVersion: 'batch/v1' },

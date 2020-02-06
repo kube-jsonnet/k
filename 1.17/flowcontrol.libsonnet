@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   flowcontrol:: {
     v1alpha1:: {
       local apiVersion = { apiVersion: 'flowcontrol.apiserver.k8s.io/v1alpha1' },

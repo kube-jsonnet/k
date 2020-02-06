@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   admissionregistration:: {
     v1beta1:: {
       local apiVersion = { apiVersion: 'admissionregistration.k8s.io/v1beta1' },

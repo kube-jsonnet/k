@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   events:: {
     v1beta1:: {
       local apiVersion = { apiVersion: 'events.k8s.io/v1beta1' },

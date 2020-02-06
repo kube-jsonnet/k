@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   scheduling:: {
     v1:: {
       local apiVersion = { apiVersion: 'scheduling.k8s.io/v1' },

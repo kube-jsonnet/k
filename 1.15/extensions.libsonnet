@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   extensions:: {
     v1beta1:: {
       local apiVersion = { apiVersion: 'extensions/v1beta1' },

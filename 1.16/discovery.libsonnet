@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   discovery:: {
     v1alpha1:: {
       local apiVersion = { apiVersion: 'discovery.k8s.io/v1alpha1' },

@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   storage:: {
     v1:: {
       local apiVersion = { apiVersion: 'storage.k8s.io/v1' },

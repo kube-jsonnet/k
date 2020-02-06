@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   policy:: {
     v1beta1:: {
       local apiVersion = { apiVersion: 'policy/v1beta1' },

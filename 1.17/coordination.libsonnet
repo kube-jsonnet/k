@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   coordination:: {
     v1:: {
       local apiVersion = { apiVersion: 'coordination.k8s.io/v1' },

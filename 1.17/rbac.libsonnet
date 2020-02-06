@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   rbac:: {
     v1:: {
       local apiVersion = { apiVersion: 'rbac.authorization.k8s.io/v1' },

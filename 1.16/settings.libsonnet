@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   settings:: {
     v1alpha1:: {
       local apiVersion = { apiVersion: 'settings.k8s.io/v1alpha1' },

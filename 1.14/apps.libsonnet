@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   apps:: {
     v1:: {
       local apiVersion = { apiVersion: 'apps/v1' },

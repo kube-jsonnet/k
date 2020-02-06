@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   autoscaling:: {
     v1:: {
       local apiVersion = { apiVersion: 'autoscaling/v1' },
