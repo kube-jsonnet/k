@@ -109,12 +109,20 @@ func (d *Document) groups(resources []Object) ([]Group, error) {
 }
 
 // Node converts a document to a node.
-func (d *Document) Nodes() (map[string]nm.Noder, error) {
+func (d *Document) Nodes(meta Metadata) (map[string]nm.Noder, error) {
 	main := nm.NewObject()
 	metadata := map[string]interface{}{
-		"kubernetesVersion": d.catalog.Version(),
-		"checksum":          d.catalog.Checksum(),
+		d.catalog.title: map[string]interface{}{
+			"version":    d.catalog.Version(),
+			"checksum":   d.catalog.Checksum(),
+			"maintainer": d.catalog.maintainer,
+			"generator": map[string]interface{}{
+				"vendor":  meta.Vendor,
+				"version": meta.Version,
+			},
+		},
 	}
+
 	metadataObj, err := nm.KVFromMap(metadata)
 	if err != nil {
 		return nil, errors.Wrap(err, "create metadata key")

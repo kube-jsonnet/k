@@ -18,16 +18,28 @@ type Lib struct {
 }
 
 type GenOpts struct {
+	Metadata
+
 	// OpenAPI (swagger.json) spec of the API
 	OpenAPI string
 
 	// Optional regexp to only generate specific apiGroups
 	Target *regexp.Regexp
 
-	// Name of the generated library (embedded into Jsonnet)
+	// Name of the generated library (e.g. Kubernetes, cert-manager, etc)
 	Name string
+	// Version of the targeted software (e.g. 1.17, 0.1, etc.)
+	Version string
+	// Maintainer of the generated library
+	Maintainer string
+}
 
-	// Version of the generated library (embedded into Jsonnet)
+// Metadata holds meta information about the generator used for the build
+type Metadata struct {
+	// Vendor of this build
+	Vendor string
+
+	// Version of the generator
 	Version string
 }
 
@@ -38,16 +50,17 @@ func GenerateLib(opts GenOpts) (*Lib, error) {
 		return nil, errors.Wrap(err, "import Kubernetes spec")
 	}
 
-	c, err := NewCatalog(apiSpec,
+	c, err := NewCatalog(apiSpec, opts.Name,
 		CatalogOptChecksum(checksum),
 		CatalogOptVersion(opts.Version),
+		CatalogOptMaintainer(opts.Maintainer),
 	)
 
 	if err != nil {
 		return nil, errors.Wrap(err, "create ksonnet catalog")
 	}
 
-	k8s, err := createK8s(c)
+	k8s, err := createK8s(c, opts.Metadata)
 	if err != nil {
 		return nil, errors.Wrap(err, "create k8s.libsonnet")
 	}
@@ -66,13 +79,13 @@ func GenerateLib(opts GenOpts) (*Lib, error) {
 	return lib, nil
 }
 
-func createK8s(c *Catalog) (map[string][]byte, error) {
+func createK8s(c *Catalog, meta Metadata) (map[string][]byte, error) {
 	doc, err := NewDocument(c)
 	if err != nil {
 		return nil, errors.Wrapf(err, "create document")
 	}
 
-	nodes, err := doc.Nodes()
+	nodes, err := doc.Nodes(meta)
 	if err != nil {
 		return nil, errors.Wrapf(err, "build document node")
 	}

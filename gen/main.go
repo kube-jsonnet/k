@@ -16,16 +16,23 @@ import (
 	"github.com/kube-jsonnet/k/gen/log"
 )
 
+var (
+	Version = "dev"
+	Vendor  = "github.com/kube-jsonnet/k"
+)
+
 const (
 	k8s = "k8s.libsonnet"
 	k   = "k.libsonnet"
 )
 
 func main() {
+	fmt.Println(Version)
 	outputDir := flag.String("dir", ".", "output directory")
 	target := flag.String("target", "", "<optional> regex pattern to filter apiGroup")
 
-	name := flag.String("name", "Kubernetes", "name of the generated library")
+	name := flag.String("name", "k8s.io", "name of the generated library")
+	maintainer := flag.String("maintainer", "kube-jsonnet", "maintainer of the generated library")
 	version := flag.String("version", "", "<optional> version of the generated library (defaults to specified in swagger.json)")
 
 	pprof := flag.Bool("pprof", false, "Profile execution")
@@ -51,10 +58,15 @@ func main() {
 	}
 
 	if err := gen(ksonnet.GenOpts{
-		OpenAPI: flag.Arg(0),
-		Target:  regexp.MustCompile(*target),
-		Name:    *name,
-		Version: *version,
+		OpenAPI:    flag.Arg(0),
+		Target:     regexp.MustCompile(*target),
+		Name:       *name,
+		Version:    *version,
+		Maintainer: *maintainer,
+		Metadata: ksonnet.Metadata{
+			Version: Version,
+			Vendor:  Vendor,
+		},
 	}, *outputDir); err != nil {
 		log.Fatalln(err)
 	}

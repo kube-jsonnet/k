@@ -42,6 +42,13 @@ func CatalogOptChecksum(checksum string) CatalogOpt {
 	}
 }
 
+// CatalogOptMaintainer is a Catalog option for setting the maintainer of the swagger schema.
+func CatalogOptMaintainer(maintainer string) CatalogOpt {
+	return func(c *Catalog) {
+		c.maintainer = maintainer
+	}
+}
+
 // CatalogOptChecksum is a Catalog option for setting the Kubernetes target Version
 func CatalogOptVersion(version string) CatalogOpt {
 	return func(c *Catalog) {
@@ -59,11 +66,14 @@ func CatalogOptVersion(version string) CatalogOpt {
 
 // Catalog is a catalog definitions
 type Catalog struct {
-	apiSpec    *spec.Swagger
-	extractFn  ExtractFn
+	title      string
+	maintainer string
 	apiVersion *semver.Version
-	paths      map[string]Component
-	checksum   string
+
+	apiSpec   *spec.Swagger
+	extractFn ExtractFn
+	paths     map[string]Component
+	checksum  string
 
 	// memos
 	typesCache  []Type
@@ -71,7 +81,7 @@ type Catalog struct {
 }
 
 // NewCatalog creates an instance of Catalog.
-func NewCatalog(apiSpec *spec.Swagger, opts ...CatalogOpt) (*Catalog, error) {
+func NewCatalog(apiSpec *spec.Swagger, title string, opts ...CatalogOpt) (*Catalog, error) {
 	if apiSpec == nil {
 		return nil, errors.New("apiSpec is nil")
 	}
@@ -89,6 +99,7 @@ func NewCatalog(apiSpec *spec.Swagger, opts ...CatalogOpt) (*Catalog, error) {
 		apiSpec:   apiSpec,
 		extractFn: extractProperties,
 		paths:     paths,
+		title:     title,
 	}
 
 	for _, opt := range opts {
