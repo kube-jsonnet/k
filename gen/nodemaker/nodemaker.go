@@ -154,6 +154,15 @@ func OnelineObject(opts ...ObjectOpt) *Object {
 
 // Set sets a field with a value.
 func (o *Object) Set(key Key, value Noder) error {
+	return o.set(key, value, false)
+}
+
+// Set sets a field with a value to the first place.
+func (o *Object) Set0(key Key, value Noder) error {
+	return o.set(key, value, true)
+}
+
+func (o *Object) set(key Key, value Noder, prepend bool) error {
 	name := key.name
 
 	if _, ok := o.keys[name]; ok {
@@ -162,10 +171,14 @@ func (o *Object) Set(key Key, value Noder) error {
 
 	o.keys[name] = key
 	o.fields[name] = value
-	o.keyList = append(o.keyList, name)
+
+	if prepend {
+		o.keyList = append([]string{name}, o.keyList...)
+	} else {
+		o.keyList = append(o.keyList, name)
+	}
 
 	return nil
-
 }
 
 // Get retrieves a field by name.

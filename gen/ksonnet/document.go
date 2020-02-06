@@ -127,19 +127,27 @@ func (d *Document) Nodes() (map[string]nm.Noder, error) {
 		return nil, err
 	}
 
+	for k, g := range groups {
+		g.(*nm.Object).Set0(nm.LocalKey("hidden"), nm.NewImport("_hidden.libsonnet"))
+		groups[k] = g
+	}
+
 	hidden := nm.NewObject()
 	if err := d.renderHiddenGroups(d, hidden); err != nil {
 		return nil, err
 	}
-	main.Set(nm.LocalKey("hidden"), hidden)
 
 	nodes := make([]nm.Noder, 0, len(groups))
 	for name := range groups {
+		if name != "apps" {
+			continue
+		}
 		nodes = append(nodes, nm.NewImport(name+".libsonnet"))
 	}
 	nodes = append(nodes, main)
 
 	groups["k8s"] = add(nodes...)
+	groups["_hidden"] = hidden
 	return groups, nil
 }
 
