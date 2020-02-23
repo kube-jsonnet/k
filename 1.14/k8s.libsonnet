@@ -4,7 +4,7 @@
       checksum: 'b923088253256b1ed1631fb8f32328d08984583a7f31c58c1a2d95926f71f204',
       generator: {
         vendor: 'github.com/kube-jsonnet/k',
-        version: 'f85c9f5',
+        version: 'ed6db2d-dirty',
       },
       maintainer: 'kube-jsonnet',
       version: '1.14.0',
