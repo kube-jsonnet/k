@@ -20,7 +20,7 @@ type Document struct {
 	fieldsFn           func() ([]Field, error)
 	renderFn           func(fn renderNodeFn, c *Catalog, o *nm.Object, group Group) error
 	renderGroups       func(doc *Document) (map[string]nm.Noder, error)
-	renderHiddenGroups func(doc *Document, container *nm.Object) error
+	renderHiddenGroups func(doc *Document) (nm.Noder, error)
 	objectNodeFn       func(c *Catalog, a *APIObject) (*nm.Object, error)
 }
 
@@ -134,8 +134,8 @@ func (d *Document) Nodes(meta Metadata) (map[string]nm.Noder, error) {
 		return nil, err
 	}
 
-	hidden := nm.NewObject()
-	if err := d.renderHiddenGroups(d, hidden); err != nil {
+	hidden, err := d.renderHiddenGroups(d)
+	if err != nil {
 		return nil, err
 	}
 	files["_hidden"] = hidden
@@ -207,17 +207,22 @@ func renderGroups(d *Document) (map[string]nm.Noder, error) {
 	return out, nil
 }
 
-func renderHiddenGroups(d *Document, container *nm.Object) error {
+func renderHiddenGroups(d *Document) (nm.Noder, error) {
 	groups, err := d.HiddenGroups()
 	if err != nil {
-		return errors.Wrap(err, "retrieve hidden groups")
+		return nil, errors.Wrap(err, "retrieve hidden groups")
 	}
 
+	con := nm.NewObject()
 	for _, g := range groups {
-		if err = d.renderFn(d.objectNodeFn, d.catalog, container, g); err != nil {
-			return errors.Wrap(err, "render hidden groups")
+		o := nm.NewObject()
+
+		if err = d.renderFn(d.objectNodeFn, d.catalog, o, g); err != nil {
+			return nil, errors.Wrap(err, "render hidden groups")
 		}
+
+		con.Set(nm.NewKey(g.Name()), o)
 	}
 
-	return nil
+	return con, nil
 }

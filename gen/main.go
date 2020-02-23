@@ -27,7 +27,6 @@ const (
 )
 
 func main() {
-	fmt.Println(Version)
 	outputDir := flag.String("dir", ".", "output directory")
 	target := flag.String("target", "", "<optional> regex pattern to filter apiGroup")
 
