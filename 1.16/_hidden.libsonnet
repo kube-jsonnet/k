@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   v1:: {
     local apiVersion = { apiVersion: 'admissionregistration/v1' },
     // MutatingWebhook describes an admission webhook and the resources and operations it applies to.

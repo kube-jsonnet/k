@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   v1beta1:: {
     local apiVersion = { apiVersion: 'admissionregistration/v1beta1' },
     // MutatingWebhookConfigurationList is a list of MutatingWebhookConfiguration.

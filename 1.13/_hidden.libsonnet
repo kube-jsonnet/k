@@ -1,4 +1,5 @@
 {
+  local hidden = (import '_hidden.libsonnet'),
   v1alpha1:: {
     local apiVersion = { apiVersion: 'admissionregistration/v1alpha1' },
     // Initializer describes the name and the failure policy of an initializer, and what resources it applies to.
