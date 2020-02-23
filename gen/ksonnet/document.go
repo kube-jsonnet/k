@@ -133,6 +133,13 @@ func (d *Document) Nodes(meta Metadata) (map[string]nm.Noder, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	hidden := nm.NewObject()
+	if err := d.renderHiddenGroups(d, hidden); err != nil {
+		return nil, err
+	}
+	files["_hidden"] = hidden
+
 	for k, g := range files {
 		g.(*nm.Object).Set0(nm.LocalKey("hidden"), nm.NewImport("_hidden.libsonnet"))
 		files[k] = g
@@ -142,12 +149,6 @@ func (d *Document) Nodes(meta Metadata) (map[string]nm.Noder, error) {
 		main.Set(nm.NewKey(name), nm.NewImport(name+".libsonnet"))
 	}
 	files["k8s"] = main
-
-	hidden := nm.NewObject()
-	if err := d.renderHiddenGroups(d, hidden); err != nil {
-		return nil, err
-	}
-	files["_hidden"] = hidden
 
 	return files, nil
 }
