@@ -1,13 +1,13 @@
 {
   __ksonnet: {
     "k8s.io": {
-      checksum: 'b923088253256b1ed1631fb8f32328d08984583a7f31c58c1a2d95926f71f204',
+      checksum: 'c16b4744603a5a9941c6c656ffea9abe857f6b39b02d8620504530b7906d7838',
       generator: {
         vendor: 'github.com/kube-jsonnet/k',
         version: '21598b7-dirty',
       },
       maintainer: 'kube-jsonnet',
-      version: '1.14.0',
+      version: '1.18.0',
     },
   },
   _hidden:: (import '_hidden.libsonnet'),
@@ -23,8 +23,10 @@
   certificates:: (import 'certificates.libsonnet'),
   coordination:: (import 'coordination.libsonnet'),
   core:: (import 'core.libsonnet'),
+  discovery:: (import 'discovery.libsonnet'),
   events:: (import 'events.libsonnet'),
   extensions:: (import 'extensions.libsonnet'),
+  flowcontrol:: (import 'flowcontrol.libsonnet'),
   meta:: (import 'meta.libsonnet'),
   networking:: (import 'networking.libsonnet'),
   node:: (import 'node.libsonnet'),

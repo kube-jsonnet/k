@@ -165,3 +165,14 @@ func Test_FormatKind(t *testing.T) {
 		})
 	}
 }
+
+func TestKebabCaseToCamelCase(t *testing.T) {
+	kebabString := "x-kubernetes-embedded-resource"
+	t.Log(kebabString)
+	camel := kebabToCamelCase(kebabString)
+	if camel != "xKubernetesEmbeddedResource" {
+		t.Error(camel)
+		return
+	}
+	t.Log(camel)
+}

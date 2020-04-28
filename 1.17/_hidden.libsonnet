@@ -1147,7 +1147,7 @@
         withType(type):: self + { type: type },
         withUniqueItems(uniqueItems):: self + { uniqueItems: uniqueItems },
         // x-kubernetes-embedded-resource defines that the value is an embedded Kubernetes runtime.Object, with TypeMeta and ObjectMeta. The type must be object. It is allowed to further restrict the embedded object. kind, apiVersion and metadata are validated automatically. x-kubernetes-preserve-unknown-fields is allowed to be true, but does not have to be if the object is fully specified (up to kind, apiVersion, metadata).
-        "withX-Kubernetes-Embedded-Resource":: self + { "x-kubernetes-embedded-resource": x-kubernetes-embedded-resource },
+        withXKubernetesEmbeddedResource(xKubernetesEmbeddedResource):: self + { "x-kubernetes-embedded-resource": xKubernetesEmbeddedResource },
         // x-kubernetes-int-or-string specifies that this value is either an integer or a string. If this is true, an empty type is allowed and type as child of anyOf is permitted if following one of the following patterns:
         //
         // 1) anyOf:
@@ -1158,15 +1158,15 @@
         // - type: integer
         // - type: string
         // - ... zero or more
-        "withX-Kubernetes-Int-Or-String":: self + { "x-kubernetes-int-or-string": x-kubernetes-int-or-string },
+        withXKubernetesIntOrString(xKubernetesIntOrString):: self + { "x-kubernetes-int-or-string": xKubernetesIntOrString },
         // x-kubernetes-list-map-keys annotates an array with the x-kubernetes-list-type `map` by specifying the keys used as the index of the map.
         //
         // This tag MUST only be used on lists that have the "x-kubernetes-list-type" extension set to "map". Also, the values specified for this attribute must be a scalar typed field of the child structure (no nesting is supported).
-        "withX-Kubernetes-List-Map-Keys":: self + if std.type(x-kubernetes-list-map-keys) == 'array' then { "x-kubernetes-list-map-keys": x-kubernetes-list-map-keys } else { "x-kubernetes-list-map-keys": [x-kubernetes-list-map-keys] },
+        withXKubernetesListMapKeys(xKubernetesListMapKeys):: self + if std.type(xKubernetesListMapKeys) == 'array' then { "x-kubernetes-list-map-keys": xKubernetesListMapKeys } else { "x-kubernetes-list-map-keys": [xKubernetesListMapKeys] },
         // x-kubernetes-list-map-keys annotates an array with the x-kubernetes-list-type `map` by specifying the keys used as the index of the map.
         //
         // This tag MUST only be used on lists that have the "x-kubernetes-list-type" extension set to "map". Also, the values specified for this attribute must be a scalar typed field of the child structure (no nesting is supported).
-        "withX-Kubernetes-List-Map-KeysMixin":: self + if std.type(x-kubernetes-list-map-keys) == 'array' then { "x-kubernetes-list-map-keys"+: x-kubernetes-list-map-keys } else { "x-kubernetes-list-map-keys"+: [x-kubernetes-list-map-keys] },
+        withXKubernetesListMapKeysMixin(xKubernetesListMapKeys):: self + if std.type(xKubernetesListMapKeys) == 'array' then { "x-kubernetes-list-map-keys"+: xKubernetesListMapKeys } else { "x-kubernetes-list-map-keys"+: [xKubernetesListMapKeys] },
         // x-kubernetes-list-type annotates an array to further describe its topology. This extension must only be used on lists and may have 3 possible values:
         //
         // 1) `atomic`: the list is treated as a single entity, like a scalar.
@@ -1181,7 +1181,7 @@
         // used to identify them. Order is preserved upon merge. The map tag
         // must only be used on a list with elements of type object.
         // Defaults to atomic for arrays.
-        "withX-Kubernetes-List-Type":: self + { "x-kubernetes-list-type": x-kubernetes-list-type },
+        withXKubernetesListType(xKubernetesListType):: self + { "x-kubernetes-list-type": xKubernetesListType },
         // x-kubernetes-map-type annotates an object to further describe its topology. This extension must only be used when type is object and may have 2 possible values:
         //
         // 1) `granular`:
@@ -1190,9 +1190,9 @@
         // the default behaviour for all maps.
         // 2) `atomic`: the list is treated as a single entity, like a scalar.
         // Atomic maps will be entirely replaced when updated.
-        "withX-Kubernetes-Map-Type":: self + { "x-kubernetes-map-type": x-kubernetes-map-type },
+        withXKubernetesMapType(xKubernetesMapType):: self + { "x-kubernetes-map-type": xKubernetesMapType },
         // x-kubernetes-preserve-unknown-fields stops the API server decoding step from pruning fields which are not specified in the validation schema. This affects fields recursively, but switches back to normal pruning behaviour if nested properties or additionalProperties are specified in the schema. This can either be true or undefined. False is forbidden.
-        "withX-Kubernetes-Preserve-Unknown-Fields":: self + { "x-kubernetes-preserve-unknown-fields": x-kubernetes-preserve-unknown-fields },
+        withXKubernetesPreserveUnknownFields(xKubernetesPreserveUnknownFields):: self + { "x-kubernetes-preserve-unknown-fields": xKubernetesPreserveUnknownFields },
         mixin:: {
           additionalItems:: {
             local __additionalItemsMixin(additionalItems) = { additionalItems+: additionalItems },
@@ -1770,7 +1770,7 @@
         withType(type):: self + { type: type },
         withUniqueItems(uniqueItems):: self + { uniqueItems: uniqueItems },
         // x-kubernetes-embedded-resource defines that the value is an embedded Kubernetes runtime.Object, with TypeMeta and ObjectMeta. The type must be object. It is allowed to further restrict the embedded object. kind, apiVersion and metadata are validated automatically. x-kubernetes-preserve-unknown-fields is allowed to be true, but does not have to be if the object is fully specified (up to kind, apiVersion, metadata).
-        "withX-Kubernetes-Embedded-Resource":: self + { "x-kubernetes-embedded-resource": x-kubernetes-embedded-resource },
+        withXKubernetesEmbeddedResource(xKubernetesEmbeddedResource):: self + { "x-kubernetes-embedded-resource": xKubernetesEmbeddedResource },
         // x-kubernetes-int-or-string specifies that this value is either an integer or a string. If this is true, an empty type is allowed and type as child of anyOf is permitted if following one of the following patterns:
         //
         // 1) anyOf:
@@ -1781,15 +1781,15 @@
         // - type: integer
         // - type: string
         // - ... zero or more
-        "withX-Kubernetes-Int-Or-String":: self + { "x-kubernetes-int-or-string": x-kubernetes-int-or-string },
+        withXKubernetesIntOrString(xKubernetesIntOrString):: self + { "x-kubernetes-int-or-string": xKubernetesIntOrString },
         // x-kubernetes-list-map-keys annotates an array with the x-kubernetes-list-type `map` by specifying the keys used as the index of the map.
         //
         // This tag MUST only be used on lists that have the "x-kubernetes-list-type" extension set to "map". Also, the values specified for this attribute must be a scalar typed field of the child structure (no nesting is supported).
-        "withX-Kubernetes-List-Map-Keys":: self + if std.type(x-kubernetes-list-map-keys) == 'array' then { "x-kubernetes-list-map-keys": x-kubernetes-list-map-keys } else { "x-kubernetes-list-map-keys": [x-kubernetes-list-map-keys] },
+        withXKubernetesListMapKeys(xKubernetesListMapKeys):: self + if std.type(xKubernetesListMapKeys) == 'array' then { "x-kubernetes-list-map-keys": xKubernetesListMapKeys } else { "x-kubernetes-list-map-keys": [xKubernetesListMapKeys] },
         // x-kubernetes-list-map-keys annotates an array with the x-kubernetes-list-type `map` by specifying the keys used as the index of the map.
         //
         // This tag MUST only be used on lists that have the "x-kubernetes-list-type" extension set to "map". Also, the values specified for this attribute must be a scalar typed field of the child structure (no nesting is supported).
-        "withX-Kubernetes-List-Map-KeysMixin":: self + if std.type(x-kubernetes-list-map-keys) == 'array' then { "x-kubernetes-list-map-keys"+: x-kubernetes-list-map-keys } else { "x-kubernetes-list-map-keys"+: [x-kubernetes-list-map-keys] },
+        withXKubernetesListMapKeysMixin(xKubernetesListMapKeys):: self + if std.type(xKubernetesListMapKeys) == 'array' then { "x-kubernetes-list-map-keys"+: xKubernetesListMapKeys } else { "x-kubernetes-list-map-keys"+: [xKubernetesListMapKeys] },
         // x-kubernetes-list-type annotates an array to further describe its topology. This extension must only be used on lists and may have 3 possible values:
         //
         // 1) `atomic`: the list is treated as a single entity, like a scalar.
@@ -1804,7 +1804,7 @@
         // used to identify them. Order is preserved upon merge. The map tag
         // must only be used on a list with elements of type object.
         // Defaults to atomic for arrays.
-        "withX-Kubernetes-List-Type":: self + { "x-kubernetes-list-type": x-kubernetes-list-type },
+        withXKubernetesListType(xKubernetesListType):: self + { "x-kubernetes-list-type": xKubernetesListType },
         // x-kubernetes-map-type annotates an object to further describe its topology. This extension must only be used when type is object and may have 2 possible values:
         //
         // 1) `granular`:
@@ -1813,9 +1813,9 @@
         // the default behaviour for all maps.
         // 2) `atomic`: the list is treated as a single entity, like a scalar.
         // Atomic maps will be entirely replaced when updated.
-        "withX-Kubernetes-Map-Type":: self + { "x-kubernetes-map-type": x-kubernetes-map-type },
+        withXKubernetesMapType(xKubernetesMapType):: self + { "x-kubernetes-map-type": xKubernetesMapType },
         // x-kubernetes-preserve-unknown-fields stops the API server decoding step from pruning fields which are not specified in the validation schema. This affects fields recursively, but switches back to normal pruning behaviour if nested properties or additionalProperties are specified in the schema. This can either be true or undefined. False is forbidden.
-        "withX-Kubernetes-Preserve-Unknown-Fields":: self + { "x-kubernetes-preserve-unknown-fields": x-kubernetes-preserve-unknown-fields },
+        withXKubernetesPreserveUnknownFields(xKubernetesPreserveUnknownFields):: self + { "x-kubernetes-preserve-unknown-fields": xKubernetesPreserveUnknownFields },
         mixin:: {
           additionalItems:: {
             local __additionalItemsMixin(additionalItems) = { additionalItems+: additionalItems },

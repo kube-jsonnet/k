@@ -29,6 +29,24 @@ func camelCase(in string) string {
 	return out
 }
 
+// kebabToCamelCase converts a kebab-string to camelCase
+func kebabToCamelCase(kebab string) (camelCase string) {
+	isToUpper := false
+	for _, runeValue := range kebab {
+		if isToUpper {
+			camelCase += strings.ToUpper(string(runeValue))
+			isToUpper = false
+		} else {
+			if runeValue == '-' {
+				isToUpper = true
+			} else {
+				camelCase += string(runeValue)
+			}
+		}
+	}
+	return
+}
+
 // stringInSlice returns true if the string is in the slice.
 func stringInSlice(a string, list []string) bool {
 	for _, b := range list {
@@ -94,6 +112,7 @@ func FormatKind(s string) string {
 	}
 	s = capitalize(s)
 	s = camelCase(s)
+	s = kebabToCamelCase(s)
 
 	if stringInSlice(s, jsonnetKeywords) {
 		s = s + "Param"
