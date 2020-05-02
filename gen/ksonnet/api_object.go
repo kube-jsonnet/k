@@ -34,7 +34,7 @@ func (a *APIObject) Description() string {
 
 // Node returns an AST node for this api object.
 func (a *APIObject) Node(catalog *Catalog) (*nm.Object, error) {
-	return apiObjectNode(catalog, a)
+	return objectNodeFn(catalog, a)
 }
 
 func (a *APIObject) initNode(catalog *Catalog) (*nm.Object, error) {
@@ -84,7 +84,7 @@ func objectConstructor() *nm.Binary {
 	return nm.NewBinary(nm.NewVar("apiVersion"), nm.NewVar("kind"), nm.BopPlus)
 }
 
-func apiObjectNode(catalog *Catalog, a *APIObject) (*nm.Object, error) {
+func objectNodeFn(catalog *Catalog, a *APIObject) (*nm.Object, error) {
 	if catalog == nil {
 		return nil, errors.New("catalog is nil")
 	}

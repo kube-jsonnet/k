@@ -85,6 +85,10 @@ func createK8s(c *Catalog, meta Metadata) (map[string][]byte, error) {
 		return nil, errors.Wrapf(err, "create document")
 	}
 
+	// set global
+	// TODO: don't use a global
+	vendor = meta.Vendor
+	version = c.Version()[0:4]
 	nodes, err := doc.Nodes(meta)
 	if err != nil {
 		return nil, errors.Wrapf(err, "build document node")
