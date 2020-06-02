@@ -1,3 +1,5 @@
+# !!! THIS REPOSITORY HAS BEEN DEPRECATED IN FAVOR OF [k8s-alpha](https://github.com/jsonnet-libs/k8s-alpha)!!!
+
 # `k.libsonnet`: The Kubernetes library for Jsonnet
 
 Generated from Kubernetes' `swagger.json`, this project provides an always
